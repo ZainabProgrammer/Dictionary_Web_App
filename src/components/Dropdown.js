@@ -2,24 +2,6 @@ import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Arrow from "../images/arrow.svg";
-import { makeStyles, styled } from "@mui/styles";
-
-const MenuItems = styled(MenuItem)({
-  "&:hover": {
-    background: "none",
-    color: "rgb(164, 69, 237)",
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  menuItem: {
-    "&.Mui-selected": {
-      background: "none", // Remove background color
-      color: "rgb(164, 69, 237)", // Change text color
-    },
-  },
-}));
 
 export default function Dropdown({ isDarkMode }) {
   const [selectedFont, setSelectedFont] = React.useState("");
@@ -27,13 +9,12 @@ export default function Dropdown({ isDarkMode }) {
   const handleChange = (event) => {
     setSelectedFont(event.target.value);
   };
-  const classes = useStyles();
 
   React.useEffect(() => {
     const fontFamilies = {
-      "": "monospace", // Use the default font for the "Mono" option
-      10: "serif", // Change this to the actual font family you want for "Serif"
-      20: "sans-serif", // Change this to the actual font family you want for "Sans Serif"
+      "": "monospace",
+      10: "serif",
+      20: "sans-serif",
     };
     document.body.style.fontFamily = fontFamilies[selectedFont];
   }, [selectedFont]);
@@ -46,10 +27,9 @@ export default function Dropdown({ isDarkMode }) {
             value={selectedFont}
             onChange={handleChange}
             displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-            IconComponent={() => (
-              <img src={Arrow} alt="" style={{ marginRight: "1.3rem" }} />
-            )}
+            inputProps={{
+              "aria-label": "Without label",
+            }}
             sx={{
               border: "none", // Remove the border
               "& .MuiOutlinedInput-notchedOutline": {
@@ -62,15 +42,11 @@ export default function Dropdown({ isDarkMode }) {
               fontFamily: "unset",
             }}
           >
-            <MenuItems value="" className={classes.menuItem}>
+            <MenuItem value="">
               <em>Mono</em>
-            </MenuItems>
-            <MenuItems value={10} className={classes.menuItem}>
-              Serif
-            </MenuItems>
-            <MenuItems value={20} className={classes.menuItem}>
-              Sans Serif
-            </MenuItems>
+            </MenuItem>
+            <MenuItem value={10}>Serif</MenuItem>
+            <MenuItem value={20}>Sans Serif</MenuItem>
           </Select>
         </FormControl>
       </div>

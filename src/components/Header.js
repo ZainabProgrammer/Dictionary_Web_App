@@ -38,10 +38,7 @@ const Header = ({ isDarkMode, setIsDarkMode }) => {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "",
-
               gap: 2,
-
               alignItems: "center",
             }}
           >

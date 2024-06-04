@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Main from "./components/Main";
-import React, { useEffect, useState } from "react";
+import React from "react";
 const customTypography = {
   fontFamily: "unset",
 };
@@ -21,7 +21,8 @@ function App() {
           sx={{
             background: isDarkMode ? "black" : "white",
             width: "100%",
-            height: "100vh",
+            minHeight: "100vh",
+            height: "100%",
             overflowX: "hidden",
           }}
         >

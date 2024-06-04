@@ -12,8 +12,11 @@ const Search = () => {
           variant="outlined"
           value={query}
           onChange={handleChange}
+          type="search"
         />
-        <Button onClick={handleSearch}>Search</Button>
+        <Button type="button" onClick={handleSearch}>
+          Search
+        </Button>
       </Container>
     </div>
   );

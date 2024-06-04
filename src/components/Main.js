@@ -18,14 +18,18 @@ const Main = ({ isDarkMode }) => {
   const [initial, setinitial] = useState(true);
   const [query, setQuery] = useState("");
 
-  const [data, fetchData, error404, loading] = useFetch(query);
+  const [data, fetchData, error404, loading, setloading] = useFetch(query);
 
   const handleChange = (e) => {
     setQuery(e.target.value);
     setInputError(false);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (loading && inputError) {
+      setloading(false);
+    }
     if (query) {
       fetchData(query);
     } else {
@@ -56,6 +60,7 @@ const Main = ({ isDarkMode }) => {
     if (data.length > 0) {
       createAudioObjects();
     }
+    //eslint-disable-next-line
   }, [data]);
 
   // Function to play audio
@@ -88,57 +93,60 @@ const Main = ({ isDarkMode }) => {
               justifyContent: "space-between",
             }}
           >
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              placeholder="Search for any word"
-              sx={{
-                background: isDarkMode ? "rgb(31, 31, 31)" : "white",
-                width: "100%",
-                borderRadius: "50px",
-                fontWeight: "bold",
-                border: "1px solid #7772",
-                fontSize: "20px",
-                caretColor: "rgb(164, 69, 237)",
-                "& .MuiOutlinedInput-root": {
-                  border: `1px solid ${
-                    inputError ? "rgba(255, 82, 82, 1)" : "#7772"
-                  }`,
-                  color: isDarkMode ? "white" : "black",
-                  fontWeight: "bold",
+            <form onSubmit={handleSearch} style={{ width: "100%" }}>
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Search for any word"
+                sx={{
+                  background: isDarkMode ? "rgb(31, 31, 31)" : "white",
+                  width: "100%",
                   borderRadius: "50px",
-                  fieldset: {
-                    border: "none",
-                  },
-                },
-
-                "& .Mui-focused": {
-                  border: "1px solid rgba(164, 69, 237, 1)",
-                },
-              }}
-              value={query}
-              onChange={handleChange}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Button
-                      onClick={handleSearch}
-                      sx={{ borderRadius: "50px", padding: "1rem" }}
-                    >
-                      <img src={search} alt="Search Icon" />
-                    </Button>
-                  </InputAdornment>
-                ),
-                sx: {
+                  fontWeight: "bold",
+                  border: "1px solid #7772",
+                  fontSize: "20px",
+                  caretColor: "rgb(164, 69, 237)",
                   "& .MuiOutlinedInput-root": {
-                    border: "none",
+                    border: `1px solid ${
+                      inputError ? "rgba(255, 82, 82, 1)" : "#7772"
+                    }`,
+                    color: isDarkMode ? "white" : "black",
+                    fontWeight: "bold",
+                    borderRadius: "50px",
                     fieldset: {
                       border: "none",
                     },
                   },
-                },
-              }}
-            />
+
+                  "& .Mui-focused": {
+                    border: "1px solid rgba(164, 69, 237, 1)",
+                  },
+                }}
+                value={query}
+                onChange={handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        type="submit"
+                        sx={{ borderRadius: "50px", padding: "1rem" }}
+                      >
+                        <img src={search} alt="Search Icon" />
+                      </Button>
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      border: "none",
+                      outline: "none",
+                      fieldset: {
+                        border: "none",
+                      },
+                    },
+                  },
+                }}
+              />
+            </form>
           </Box>
 
           {loading && <Spinner />}
@@ -153,7 +161,28 @@ const Main = ({ isDarkMode }) => {
           </Typography>
         </Container>
         {initial ? (
-          " "
+          <Container
+            sx={{
+              textAlign: "center",
+              maxWidth: "sm",
+              height: "75vh",
+            }}
+          >
+            <Typography
+              sx={{
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "rgb(117, 117, 117)",
+                fontWeight: "bold",
+                fontSize: "14px",
+              }}
+            >
+              {" "}
+              Type your query to get started..{" "}
+            </Typography>
+          </Container>
         ) : (
           <Box>
             {!loading && error404 && data.length < 1 ? (
@@ -194,7 +223,6 @@ const Main = ({ isDarkMode }) => {
               </Container>
             ) : (
               // Display Word Details
-
               <>
                 {data.length > 0 && (
                   <>
